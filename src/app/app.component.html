@@ -3,5 +3,7 @@
   <a routerLink="/dashboard">Search</a>
   <a routerLink="/linesOfBusiness">View All Lines Of Business</a>
 </nav>
+<div>Most Popular Lines: {{popular[0].name}} ({{popular[0].quotes}} quotes),
+                         {{popular[1].name}} ({{popular[1].quotes}} quotes)</div>
 <router-outlet></router-outlet>
 <app-messages></app-messages>

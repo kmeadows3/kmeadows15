@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-
+import { Quote } from '../Quote'
+import { QuoteService } from '../quote.service';
 import { LineOfBusiness } from '../LineOfBusiness';
 import { LineOfBusinessService } from '../lineOfBusiness.service';
 
@@ -16,7 +17,8 @@ export class LineOfBusinessDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private lineOfBusinessService: LineOfBusinessService,
-    private location: Location
+    private location: Location,
+    private quoteService: QuoteService
   ) {}
 
   ngOnInit(): void {
@@ -26,7 +28,12 @@ export class LineOfBusinessDetailComponent implements OnInit {
   getLineOfBusiness(): void {
     const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
     this.lineOfBusinessService.getLineOfBusiness(id)
-      .subscribe(lineOfBusiness => this.lineOfBusiness = lineOfBusiness);
+      .subscribe(lineOfBusiness => {
+        let quote: Quote[] = [];
+        this.quoteService.getQuotesByLineOfBusiness(id)
+          .subscribe( quotes => lineOfBusiness.quotes = quotes.length);
+        this.lineOfBusiness = lineOfBusiness;
+      } );
   }
 
   goBack(): void {
